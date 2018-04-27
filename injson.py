@@ -3,9 +3,9 @@ from copy import deepcopy
 
 def code_sort(data):
     result = []
-    for k,v in data.items():
+    for k, v in data.items():
         result.append(v['code'])
-    return  result
+    return result
 
 
 def optimum(sub, result, path):
@@ -58,13 +58,13 @@ def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
                 if not isinstance(pv, list):
                     code = 2  # 键值的数据类型不一致
                 elif not isinstance(sv[0], dict):
-                    if  sv != pv:
+                    if sv != pv:
                         code = 1  # 键值不等
                 else:
-                    for i,sv_i in enumerate(sv):
+                    for i, sv_i in enumerate(sv):
                         result = []
                         flag = False
-                        for j,pv_i in enumerate(pv):
+                        for j, pv_i in enumerate(pv):
                             r = in_json(
                                 sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
                             if r['code'] == 0:
@@ -90,61 +90,64 @@ def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
 
             if code == 1:
                 re['code'] = 1
-                re['result'][spath + k] = {'code': 1, 'sv': sv, 'ppath': ppath + k, 'pv': pv}
+                re['result'][spath + k] = {'code': 1,
+                                           'sv': sv, 'ppath': ppath + k, 'pv': pv}
             elif code == 2:
                 re['code'] = 2
-                re['result'][spath + k]  = {'code': 2, 'sv': v, 'ppath': ppath + k, 'pv': ''}
+                re['result'][spath + k] = {'code': 2,
+                                           'sv': v, 'ppath': ppath + k, 'pv': ''}
         else:
             re['code'] = 3
-            re['result'][spath + k]  = {'code': 3, 'sv': sv, 'ppath': None, 'pv': ''}
+            re['result'][spath + k] = {'code': 3,
+                                       'sv': sv, 'ppath': None, 'pv': ''}
 
     re['code'] = len(re['result'])
     return re
 
 
 def test():
-    sub = {"code":200,
-            "error": "hello,word",
-            "result": [
-                {"sweetest":"OK",
-                 "status": "yes"
+    sub = {"code": 200,
+           "error": "hello,word",
+           "result": [
+               {"sweetest": "OK",
+                "status": "yes"
                 },
-                {"ages":[1,2,4],
-                 "status": "yes"
+               {"ages": [1, 2, 4],
+                "status": "yes"
                 },
-                {"sonar":"OK",
-                 "status": "yes"
+               {"sonar": "OK",
+                "status": "yes"
                 }
-            ],
+           ],
            }
 
-    parent = {"code":200,
-            "error": "you are bad",
-            "result": [
-                {"sweetest":"Fail",
-                 "status": "NO"
-                },
-                {"sweetest":"OK",
-                 "status": "NO"
-                },
-                {"ages":[1,2,3],
-                 "status": "yes"
-                },
-                {"sonar":"OK",
-                 "status": "yes"
-                }
-            ],
-           }
+    parent = {"code": 200,
+              "error": "you are bad",
+              "result": [
+                  {"sweetest": "Fail",
+                   "status": "NO"
+                   },
+                  {"sweetest": "OK",
+                      "status": "NO"
+                   },
+                  {"ages": [1, 2, 3],
+                      "status": "yes"
+                   },
+                  {"sonar": "OK",
+                      "status": "yes"
+                   }
+              ],
+              }
 
     result = in_json(sub, parent)
 
-    print('result:\n%s\n' %result)
+    print('result:\n%s\n' % result)
 
-    print('code: %s' %result['code'])
+    print('code: %s' % result['code'])
     re = result['result']
     for k in re:
-        print('\n%s: %s' %(k, re[k]['sv']))
-        print('%s: %s' %(re[k]['ppath'], re[k]['pv']))
+        print('\n%s: %s' % (k, re[k]['sv']))
+        print('%s: %s' % (re[k]['ppath'], re[k]['pv']))
 
 
 if __name__ == '__main__':
