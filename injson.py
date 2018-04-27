@@ -122,7 +122,7 @@ def pick(sub, parent,  spath='/', ppath='/'):
 
 def test():
     sub = {"code": 200,
-           "error": "hello,word",
+           "error": "hello, world",
            "name": "<name>",
            "phone": "<phone>",
            "result": [

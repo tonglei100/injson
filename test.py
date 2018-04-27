@@ -2,7 +2,7 @@ from injson import pick
 import json
 
 sub = {"code": 200,
-       "error": "hello,word",
+       "error": "hello, world",
        "name": "<name>",
        "phone": "<phone>",
        "result": [

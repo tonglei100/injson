@@ -1,6 +1,6 @@
 # injson
 
-测试一个 json 是否在另一个 json 中，并返回不一致的值；同时可以返回对应路径上的字段值。
+测试一个 json 是否在另一个 json 中，并返回不一致的键值对；同时可以以变量的形式提取对应路径上的字段值。
 
 ## 安装
 
@@ -13,7 +13,7 @@ from injson import pick
 
 
 sub = {"code": 200,
-       "error": "hello,word",
+       "error": "hello, world",
        "name": "<name>",                # 以 <name> 扩起来的字符串视为变量 name
        "phone": "<phone>",              # 将从 parent 中对应位置提取值并赋值给该变量
        "result": [
