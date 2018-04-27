@@ -3,7 +3,11 @@
 
 测试一个 json 是否在另一个 json 中
 
+## 安装
+
 > pip install injson
+
+## 使用
 
 ```python
 from injson import in_json
