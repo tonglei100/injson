@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 
-def code_sort(data):
+def rule(data):
     result = []
     for k, v in data.items():
         result.append(v['code'])
@@ -23,24 +23,33 @@ def optimum(sub, result, path):
                 flag = True
                 res.append(data)
         if not flag:
-            temp.sort(key=lambda d: code_sort(d))
+            temp.sort(key=lambda d: rule(d))
             return temp[0]
-    result.sort(key=lambda d: code_sort(d))
+    result.sort(key=lambda d: rule(d))
     return result[0]
 
 
-def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
-    re = {'code': 0, 'result': {}}
+def pick(sub, parent,  spath='/', ppath='/'):
+    re = {'code': 0, 'result': {}, 'var': {}}
     if spath != '/':
         spath += '.'
     if ppath != '/':
         ppath += '.'
 
     for k, sv in sub.items():
+        # 判断键值是否是 <value> 格式，如果是，则表明是变量赋值
+        var_flag = isinstance(sv, str) and sv.startswith(
+            '<') and sv.endswith('>')
+
         if k in parent:
             pv = parent[k]
             code = 0
-            if isinstance(sv, str):
+
+            if var_flag:
+                re['var'][sv[1:-1]] = pv
+                continue
+
+            elif isinstance(sv, str):
                 if not (isinstance(pv, str) and sv == pv):
                     code = 1  # 键值不等
 
@@ -65,25 +74,28 @@ def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
                         result = []
                         flag = False
                         for j, pv_i in enumerate(pv):
-                            r = in_json(
+                            r = pick(
                                 sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
                             if r['code'] == 0:
                                 # code = 0
                                 flag = True
+                                re['var'] = dict(re['var'], **r['var'])
                                 break
                             else:
                                 result.append(r['result'])
                         o = optimum(sv_i, result, spath + k + '[%s]' % i)
+                        re['var'] = dict(re['var'], **re['var'])
 
                         if not flag:
                             re['code'] = 1
                             re['result'] = dict(re['result'], **o)
 
+
             elif isinstance(sv, dict):
                 if not isinstance(pv, dict):
                     code = 2  # 键值的数据类型不一致
                 else:
-                    r = in_json(
+                    r = pick(
                         sv, pv, spath + k, ppath + k)
                     if r['code'] != 0:
                         re['result'][spath + k] = r['result']
@@ -98,8 +110,11 @@ def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
                                            'sv': v, 'ppath': ppath + k, 'pv': ''}
         else:
             re['code'] = 3
-            re['result'][spath + k] = {'code': 3,
-                                       'sv': sv, 'ppath': None, 'pv': ''}
+            if var_flag:
+                re['var'][sv[1:-1]] = None
+            else:
+                re['result'][spath + k] = {'code': 3,
+                                           'sv': sv, 'ppath': None, 'pv': ''}
 
     re['code'] = len(re['result'])
     return re
@@ -108,9 +123,11 @@ def in_json(sub, parent,  spath='/', ppath='/'):  # '/result[1].sweetest'
 def test():
     sub = {"code": 200,
            "error": "hello,word",
+           "name": "<name>",
+           "phone": "<phone>",
            "result": [
                {"sweetest": "OK",
-                "status": "yes"
+                "status": "<status>"
                 },
                {"ages": [1, 2, 4],
                 "status": "yes"
@@ -123,6 +140,7 @@ def test():
 
     parent = {"code": 200,
               "error": "you are bad",
+              "name": "Leo",
               "result": [
                   {"sweetest": "Fail",
                    "status": "NO"
@@ -139,15 +157,8 @@ def test():
               ],
               }
 
-    result = in_json(sub, parent)
-
-    print('result:\n%s\n' % result)
-
-    print('code: %s' % result['code'])
-    re = result['result']
-    for k in re:
-        print('\n%s: %s' % (k, re[k]['sv']))
-        print('%s: %s' % (re[k]['ppath'], re[k]['pv']))
+    result = pick(sub, parent)
+    print(result)
 
 
 if __name__ == '__main__':
