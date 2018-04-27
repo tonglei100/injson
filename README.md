@@ -50,6 +50,8 @@ result = in_json(json1, json2)
 print(json.dumps(result, ensure_ascii=False, indent=4))
 ```
 
+## 打印结果
+
 ```json
 {
     "code": 3,
