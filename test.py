@@ -26,13 +26,13 @@ parent = {"code": 200,
                "status": "NO"
                },
               {"sweetest": "OK",
-                  "status": "NO"
+               "status": "NO"
                },
               {"ages": [1, 2, 3],
-                  "status": "yes"
+               "status": "yes"
                },
               {"sonar": "OK",
-                  "status": "yes"
+               "status": "yes"
                }
           ],
           }
