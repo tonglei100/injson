@@ -16,6 +16,9 @@ sub = {"code": 200,
             "status": "yes"
             }
        ],
+       "student":{"name": "leo",
+            "age": "<age>"
+           }
        }
 
 parent = {"code": 200,
@@ -35,6 +38,9 @@ parent = {"code": 200,
                "status": "yes"
                }
           ],
+          "student":{"name": "leo",
+               "age": 19
+              }
           }
 
 result = pick(sub, parent)

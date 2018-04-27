@@ -74,8 +74,7 @@ def pick(sub, parent,  spath='/', ppath='/'):
                         result = []
                         flag = False
                         for j, pv_i in enumerate(pv):
-                            r = pick(
-                                sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
+                            r = pick(sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
                             if r['code'] == 0:
                                 # code = 0
                                 flag = True
@@ -95,10 +94,12 @@ def pick(sub, parent,  spath='/', ppath='/'):
                 if not isinstance(pv, dict):
                     code = 2  # 键值的数据类型不一致
                 else:
-                    r = pick(
-                        sv, pv, spath + k, ppath + k)
-                    if r['code'] != 0:
-                        re['result'][spath + k] = r['result']
+                    r = pick(sv, pv, spath + k, ppath + k)
+                    if r['code'] == 0:
+                       re['var'] = dict(re['var'], **r['var'])
+                       continue
+                    else:
+                        re['result'] = dict(re['result'], **r['result'])
 
             if code == 1:
                 re['code'] = 1
