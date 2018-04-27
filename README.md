@@ -9,7 +9,6 @@
 ## 使用
 
 ```python
-import json
 from injson import in_json
 
 
@@ -47,10 +46,12 @@ json2 = {"code":200,
        }
 
 result = in_json(json1, json2)
-print(json.dumps(result, ensure_ascii=False, indent=4))
+print(result)
 ```
 
 ## 打印结果
+
+> 注: 下面的 json 格式是已美化后的结果而
 
 ```json
 {
