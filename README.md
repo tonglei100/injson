@@ -14,8 +14,8 @@ from injson import pick
 
 sub = {"code": 200,
        "error": "hello,word",
-       "name": "<name>", # 以 <> 扩起来的字符串，视为变量，从parent 中对应位置提取值
-       "phone": "<phone>",
+       "name": "<name>",                # 以 <name> 扩起来的字符串视为变量 name
+       "phone": "<phone>",              # 将从 parent 中对应位置提取值并赋值给该变量
        "result": [
            {"sweetest": "OK",
             "status": "<status>"
