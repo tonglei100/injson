@@ -103,19 +103,16 @@ def pick(sub, parent,  spath='/', ppath='/'):
 
             if code == 1:
                 re['code'] = 1
-                re['result'][spath + k] = {'code': 1,
-                                           'sv': sv, 'ppath': ppath + k, 'pv': pv}
+                re['result'][spath + k] = {'code': 1, 'sv': sv, 'ppath': ppath + k, 'pv': pv}
             elif code == 2:
                 re['code'] = 2
-                re['result'][spath + k] = {'code': 2,
-                                           'sv': v, 'ppath': ppath + k, 'pv': ''}
+                re['result'][spath + k] = {'code': 2, 'sv': v, 'ppath': ppath + k, 'pv': ''}
         else:
             re['code'] = 3
             if var_flag:
                 re['var'][sv[1:-1]] = None
             else:
-                re['result'][spath + k] = {'code': 3,
-                                           'sv': sv, 'ppath': None, 'pv': ''}
+                re['result'][spath + k] = {'code': 3, 'sv': sv, 'ppath': None, 'pv': ''}
 
     re['code'] = len(re['result'])
     return re
