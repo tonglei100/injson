@@ -63,19 +63,19 @@ print(result)
     "result": {                         # 比较出不一致的键值对，并放在此列表
         "/error": {                     # 键的路径，以 / 开头
             "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，3-键不存在
-            "sv": "hello,word",         # sub json中改键的值
+            "sv": "hello,word",         # sub json 中改键的值
             "ppath": "/error",          # parent json 中对应键的路径
             "pv": "you are bad"         # parent json 中对应键的值
         },
         "/result[1].ages": {            # 如果是 list，则以 [x] 表示路径
             "code": 1,
             "sv": [1, 2, 4],
-            "ppath": "/result[2].ages", # 对于 list，去下标不一定一致。
+            "ppath": "/result[2].ages", # 对于 list，其下标不一定一致。
             "pv": [ 1, 2, 3]
         }
     },
 
-    "var": {                            # 获取对应键位置上的值，并放在如下列表中
+    "var": {                            # 获取对应键位置上的值，并放在此列表中
                                         # 如果某个键在 parent 中不存在，则其值为 None，但不会报错
         "name": "Leo",
         "phone": None,
