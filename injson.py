@@ -29,7 +29,7 @@ def optimum(sub, result, path):
     return result[0]
 
 
-def pick(sub, parent,  spath='/', ppath='/'):
+def check(sub, parent,  spath='/', ppath='/'):
     re = {'code': 0, 'result': {}, 'var': {}}
     if spath != '/':
         spath += '.'
@@ -74,7 +74,7 @@ def pick(sub, parent,  spath='/', ppath='/'):
                         result = []
                         flag = False
                         for j, pv_i in enumerate(pv):
-                            r = pick(sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
+                            r = check(sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
                             if r['code'] == 0:
                                 # code = 0
                                 flag = True
@@ -94,7 +94,7 @@ def pick(sub, parent,  spath='/', ppath='/'):
                 if not isinstance(pv, dict):
                     code = 2  # 键值的数据类型不一致
                 else:
-                    r = pick(sv, pv, spath + k, ppath + k)
+                    r = check(sv, pv, spath + k, ppath + k)
                     if r['code'] == 0:
                        re['var'] = dict(re['var'], **r['var'])
                        continue
@@ -116,6 +116,9 @@ def pick(sub, parent,  spath='/', ppath='/'):
 
     re['code'] = len(re['result'])
     return re
+
+
+pick = check
 
 
 def test():
@@ -155,7 +158,7 @@ def test():
               ],
               }
 
-    result = pick(sub, parent)
+    result = check(sub, parent)
     print(result)
 
 

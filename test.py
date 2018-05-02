@@ -1,4 +1,4 @@
-from injson import pick
+from injson import check
 import json
 
 sub = {"code": 200,
@@ -43,6 +43,6 @@ parent = {"code": 200,
               }
           }
 
-result = pick(sub, parent)
+result = check(sub, parent)
 print(result)
 print(json.dumps(result, ensure_ascii=False, indent=4))

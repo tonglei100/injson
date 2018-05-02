@@ -9,7 +9,7 @@
 ## 使用
 
 ```python
-from injson import pick
+from injson import check
 
 
 sub = {"code": 200,
@@ -48,7 +48,7 @@ parent = {"code": 200,
           ],
           }
 
-result = pick(sub, parent)
+result = check(sub, parent)
 print(result)
 ```
 
