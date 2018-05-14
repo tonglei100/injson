@@ -54,12 +54,10 @@ def check(sub, parent,  spath='/', ppath='/'):
                     code = 1  # 键值不等
 
             elif isinstance(sv, int):
-                # TODO pv 类型判断
                 if not (isinstance(pv, int) and sv == pv):
                     code = 1  # 键值不等
 
             elif isinstance(sv, float):
-                # TODO pv 类型判断
                 if not (absisinstance(pv, float) and sv == pv):
                     code = 1  # 键值不等
 
