@@ -5,6 +5,7 @@ sub = {"code": 200,
        "error": "hello, world",
        "name": "<name>",
        "phone": "<phone>",
+       "level": 1,
        "result": [
            {"sweetest": "OK",
             "status": "<status>"
@@ -24,6 +25,7 @@ sub = {"code": 200,
 parent = {"code": 200,
           "error": "you are bad",
           "name": "Leo",
+          "level": "ONE",
           "result": [
               {"sweetest": "Fail",
                "status": "NO"
@@ -44,5 +46,4 @@ parent = {"code": 200,
           }
 
 result = check(sub, parent)
-print(result)
 print(json.dumps(result, ensure_ascii=False, indent=4))

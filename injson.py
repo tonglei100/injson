@@ -29,12 +29,16 @@ def optimum(sub, result, path):
     return result[0]
 
 
-def check(sub, parent,  spath='/', ppath='/'):
+def check(sub, parent,  sp='/', pp='/'):
+    '''
+    sp: sub_path
+    pp: parent_path
+    '''
     re = {'code': 0, 'result': {}, 'var': {}}
-    if spath != '/':
-        spath += '.'
-    if ppath != '/':
-        ppath += '.'
+    if sp != '/':
+        sp += '.'
+    if pp != '/':
+        pp += '.'
 
     for k, sv in sub.items():
         # 判断键值是否是 <value> 格式，如果是，则表明是变量赋值
@@ -50,15 +54,22 @@ def check(sub, parent,  spath='/', ppath='/'):
                 continue
 
             elif isinstance(sv, str):
-                if not (isinstance(pv, str) and sv == pv):
+                if not isinstance(pv, str):
+                    code = 2  # 键值的数据类型不一致
+                elif sv != pv:
                     code = 1  # 键值不等
 
+
             elif isinstance(sv, int):
-                if not (isinstance(pv, int) and sv == pv):
+                if not isinstance(pv, int):
+                    code = 2  # 键值的数据类型不一致
+                elif sv != pv:
                     code = 1  # 键值不等
 
             elif isinstance(sv, float):
-                if not (absisinstance(pv, float) and sv == pv):
+                if not absisinstance(pv, float):
+                    code = 2  # 键值的数据类型不一致
+                elif sv != pv:
                     code = 1  # 键值不等
 
             elif isinstance(sv, list):
@@ -72,7 +83,7 @@ def check(sub, parent,  spath='/', ppath='/'):
                         result = []
                         flag = False
                         for j, pv_i in enumerate(pv):
-                            r = check(sv_i, pv_i, spath + k + '[%s]' % i, ppath + k + '[%s]' % j)
+                            r = check(sv_i, pv_i, sp + k + '[%s]' % i, pp + k + '[%s]' % j)
                             if r['code'] == 0:
                                 # code = 0
                                 flag = True
@@ -80,7 +91,7 @@ def check(sub, parent,  spath='/', ppath='/'):
                                 break
                             else:
                                 result.append(r['result'])
-                        o = optimum(sv_i, result, spath + k + '[%s]' % i)
+                        o = optimum(sv_i, result, sp + k + '[%s]' % i)
                         re['var'] = dict(re['var'], **re['var'])
 
                         if not flag:
@@ -92,7 +103,7 @@ def check(sub, parent,  spath='/', ppath='/'):
                 if not isinstance(pv, dict):
                     code = 2  # 键值的数据类型不一致
                 else:
-                    r = check(sv, pv, spath + k, ppath + k)
+                    r = check(sv, pv, sp + k, pp + k)
                     if r['code'] == 0:
                        re['var'] = dict(re['var'], **r['var'])
                        continue
@@ -101,64 +112,20 @@ def check(sub, parent,  spath='/', ppath='/'):
 
             if code == 1:
                 re['code'] = 1
-                re['result'][spath + k] = {'code': 1, 'sv': sv, 'ppath': ppath + k, 'pv': pv}
+                re['result'][sp + k] = {'code': 1, 'sv': sv, 'pp': pp + k, 'pv': pv}
             elif code == 2:
                 re['code'] = 2
-                re['result'][spath + k] = {'code': 2, 'sv': v, 'ppath': ppath + k, 'pv': ''}
+                re['result'][sp + k] = {'code': 2, 'sv': sv, 'pp': pp + k, 'pv': pv}
         else:
             re['code'] = 3
             if var_flag:
                 re['var'][sv[1:-1]] = None
             else:
-                re['result'][spath + k] = {'code': 3, 'sv': sv, 'ppath': None, 'pv': ''}
+                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': ''}
 
     re['code'] = len(re['result'])
     return re
 
 
-pick = check
-
-
-def test():
-    sub = {"code": 200,
-           "error": "hello, world",
-           "name": "<name>",
-           "phone": "<phone>",
-           "result": [
-               {"sweetest": "OK",
-                "status": "<status>"
-                },
-               {"ages": [1, 2, 4],
-                "status": "yes"
-                },
-               {"sonar": "OK",
-                "status": "yes"
-                }
-           ],
-           }
-
-    parent = {"code": 200,
-              "error": "you are bad",
-              "name": "Leo",
-              "result": [
-                  {"sweetest": "Fail",
-                   "status": "NO"
-                   },
-                  {"sweetest": "OK",
-                   "status": "NO"
-                   },
-                  {"ages": [1, 2, 3],
-                   "status": "yes"
-                   },
-                  {"sonar": "OK",
-                   "status": "yes"
-                   }
-              ],
-              }
-
-    result = check(sub, parent)
-    print(result)
-
-
 if __name__ == '__main__':
-    test()
+    pass

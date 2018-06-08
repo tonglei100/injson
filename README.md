@@ -58,27 +58,27 @@ print(result)
 
 ```python
 {
-    "code": 2,                          # 键值对不一致的个数
+    "code": 3,                          # 键值对不一致的个数
 
     "result": {                         # 比较出不一致的键值对，并放在此 dict
         "/error": {                     # 键的路径，以 / 开头
             "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，3-键不存在
-            "sv": "hello,word",         # sub json 中改键的值
-            "ppath": "/error",          # parent json 中对应键的路径
-            "pv": "you are bad"         # parent json 中对应键的值
+            "sv": "hello,word",         # 全拼为 sub_value, sub json 中改键的值
+            "pp": "/error",             # 全拼为 parent_path, parent json 中对应键的路径
+            "pv": "you are bad"         # 全拼为 parent_value, parent json 中对应键的值
         },
+
         "/result[1].ages": {            # 如果是 list，则以 [i] 表示路径
             "code": 1,
             "sv": [1, 2, 4],
-            "ppath": "/result[2].ages", # 对于 list，其下标不一定一致。
+            "pp": "/result[2].ages", # 对于 list，其下标不一定一致。
             "pv": [ 1, 2, 3]
         }
     },
 
     "var": {                            # 获取对应键位置上的值，并放在此 dict
-                                        # 如果某个键在 parent 中不存在，则其值为 None，但不会报错
         "name": "Leo",
-        "phone": None,
+        "phone": None,                  # 如果某个键在 parent 中不存在，则其值为 None，但不会报错
         "status": "NO"
     }
 }
