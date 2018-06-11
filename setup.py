@@ -7,7 +7,7 @@ setup(
     author="Leo Tong",
     author_email="tonglei@qq.com",
     description="Test the sub json if or not in parent json",
-    long_description=open("README.rst").read(),
+    # long_description=open("README.rst").read(),
     license="Apache License, Version 2.0",
     url="https://github.com/tonglei100/injson",
     #packages=['injson'],
