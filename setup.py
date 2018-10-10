@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="injson",
-    version="0.1.0",
+    version="0.1.1",
     author="Leo Tong",
     author_email="tonglei@qq.com",
     description="Test the sub json if or not in parent json",
@@ -19,7 +19,7 @@ setup(
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
         "Topic :: Software Development :: Libraries :: Python Modules",
-        "Programming Language :: Python :: 3.6"
+        "Programming Language :: Python :: 3"
     ],
     entry_points={
 

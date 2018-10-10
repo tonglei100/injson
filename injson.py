@@ -56,9 +56,13 @@ def check(sub, parent,  sp='/', pp='/'):
             elif isinstance(sv, str):
                 if not isinstance(pv, str):
                     code = 2  # 键值的数据类型不一致
+                elif sv.startswith('*'):
+                    if sv[1:] not in pv:
+                        code = 1
+                elif sv.startswith('\\'):
+                    sv = sv[1:]
                 elif sv != pv:
                     code = 1  # 键值不等
-
 
             elif isinstance(sv, int):
                 if not isinstance(pv, int):
@@ -91,7 +95,10 @@ def check(sub, parent,  sp='/', pp='/'):
                                 break
                             else:
                                 result.append(r['result'])
-                        o = optimum(sv_i, result, sp + k + '[%s]' % i)
+                        if result:
+                            o = optimum(sv_i, result, sp + k + '[%s]' % i)
+                        else:
+                            o = {}
                         re['var'] = dict(re['var'], **re['var'])
 
                         if not flag:
