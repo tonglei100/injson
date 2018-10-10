@@ -45,7 +45,13 @@ def check(sub, parent,  sp='/', pp='/'):
         var_flag = isinstance(sv, str) and sv.startswith(
             '<') and sv.endswith('>')
 
-        if k in parent:
+        if sv == '-':
+            if k not in parent:
+                re['code'] = 0
+            else:
+                re['code'] = 0  # 预期键不存在，实际键存在
+                re['result'][sp + k] = {'code': 4, 'sv': sv, 'pp': pp + k, 'pv': parent[k]}
+        elif k in parent:
             pv = parent[k]
             code = 0
 
@@ -58,6 +64,15 @@ def check(sub, parent,  sp='/', pp='/'):
                     code = 2  # 键值的数据类型不一致
                 elif sv.startswith('*'):
                     if sv[1:] not in pv:
+                        code = 1
+                elif sv.startswith('^'):
+                    if not pv.startswith(sv[1:]):
+                        code = 1
+                elif sv.startswith('$'):
+                    if not pv.endswith(sv[1:]):
+                        code = 1
+                elif sv.startswith('#'):
+                    if sv[1:] == pv:
                         code = 1
                 elif sv.startswith('\\'):
                     sv = sv[1:]
@@ -124,7 +139,7 @@ def check(sub, parent,  sp='/', pp='/'):
                 re['code'] = 2
                 re['result'][sp + k] = {'code': 2, 'sv': sv, 'pp': pp + k, 'pv': pv}
         else:
-            re['code'] = 3
+            re['code'] = 3  # 键不存在
             if var_flag:
                 re['var'][sv[1:-1]] = None
             else:
