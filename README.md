@@ -66,9 +66,9 @@ print(result)
         "/error": {                     # 键的路径，以 / 开头
             "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，\
                                         # 3-键不存在, 4-预期键不存在，实际键存在
-            "sv": "hello,word",         # 全拼为 sub_value, sub json 中改键的值
-            "pp": "/error",             # 全拼为 parent_path, parent json 中对应键的路径
-            "pv": "you are bad"         # 全拼为 parent_value, parent json 中对应键的值
+            "sv": "hello,word",         # sv 全拼为 sub_value, sub json 中对应键的值
+            "pp": "/error",             # pp 全拼为 parent_path, parent json 中对应键的路径
+            "pv": "you are bad"         # pv 全拼为 parent_value, parent json 中对应键的值
         },
 
         "/result[1].ages": {            # 如果是 list，则以 [i] 表示路径
@@ -81,7 +81,7 @@ print(result)
 
     "var": {                            # 获取对应键位置上的值，并放在此 dict
         "name": "Leo",
-        "_phone": None,                 # 如果某个键在 parent 中不存在，则键带上下划线（_—）前缀，其值为 None
+        "_phone": None,                 # 如果某个键在 parent 中不存在，则键带上下划线（_）前缀，其值为 None
         "status": "NO"
     }
 }
