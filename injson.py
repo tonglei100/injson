@@ -141,7 +141,7 @@ def check(sub, parent,  sp='/', pp='/'):
         else:
             re['code'] = 3  # 键不存在
             if var_flag:
-                re['var'][sv[1:-1]] = None
+                re['var']['_' + sv[1:-1]] = None
             else:
                 re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': ''}
 

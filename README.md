@@ -64,7 +64,7 @@ print(result)
 
     "result": {                         # 比较出不一致的键值对，并放在此 dict
         "/error": {                     # 键的路径，以 / 开头
-            "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，
+            "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，\
                                         # 3-键不存在, 4-预期键不存在，实际键存在
             "sv": "hello,word",         # 全拼为 sub_value, sub json 中改键的值
             "pp": "/error",             # 全拼为 parent_path, parent json 中对应键的路径
@@ -74,14 +74,14 @@ print(result)
         "/result[1].ages": {            # 如果是 list，则以 [i] 表示路径
             "code": 1,
             "sv": [1, 2, 4],
-            "pp": "/result[2].ages", # 对于 list，其下标不一定一致。
+            "pp": "/result[2].ages",    # 对于 list，其下标不一定一致。
             "pv": [ 1, 2, 3]
         }
     },
 
     "var": {                            # 获取对应键位置上的值，并放在此 dict
         "name": "Leo",
-        "phone": None,                  # 如果某个键在 parent 中不存在，则其值为 None，但不会报错
+        "_phone": None,                 # 如果某个键在 parent 中不存在，则键带上下划线（_—）前缀，其值为 None
         "status": "NO"
     }
 }
@@ -90,9 +90,9 @@ print(result)
 ## 特殊匹配
 
 |开头字符|匹配说明|示例    |示例说明    |
-|------|------|--------|--------|
-| \*   |包含   |*test   |包含test  |
-| \^    |开头  | ^hello |以hello开头|
-| \$   |结尾   | $world |以world结尾|
+|------|------|--------|-----------|
+| \*   |包含   |*test   |包含test    |
+| ^    |开头   | ^hello |以hello开头 |
+| $    |结尾   | $world |以world结尾 |
 | \-   |无此字段| -      |无此字段    |
-| \    |转义   | \\*   |匹配*     |
+| \    |转义   | \\*    |匹配*       |
