@@ -45,12 +45,18 @@ def check(sub, parent,  sp='/', pp='/'):
         var_flag = isinstance(sv, str) and sv.startswith(
             '<') and sv.endswith('>')
 
+        # 预期键不存在
         if sv == '-':
-            if k not in parent:
-                re['code'] = 0
-            else:
-                re['code'] = 0  # 预期键不存在，实际键存在
+            # 预期键不存在，实际键存在
+            if k in parent:
                 re['result'][sp + k] = {'code': 4, 'sv': sv, 'pp': pp + k, 'pv': parent[k]}
+
+        # 预期键存在
+        elif sv == '+':
+            # 预期键存在，实际键不存在
+            if k not in parent:
+                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
+
         elif k in parent:
             pv = parent[k]
             code = 0
@@ -72,7 +78,7 @@ def check(sub, parent,  sp='/', pp='/'):
                     if not pv.endswith(sv[1:]):
                         code = 1
                 elif sv.startswith('#'):
-                    if sv[1:] == pv:
+                    if sv[1:] == str(pv):
                         code = 1
                 elif sv.startswith('\\'):
                     sv = sv[1:]
@@ -104,7 +110,6 @@ def check(sub, parent,  sp='/', pp='/'):
                         for j, pv_i in enumerate(pv):
                             r = check(sv_i, pv_i, sp + k + '[%s]' % i, pp + k + '[%s]' % j)
                             if r['code'] == 0:
-                                # code = 0
                                 flag = True
                                 re['var'] = dict(re['var'], **r['var'])
                                 break
@@ -117,7 +122,6 @@ def check(sub, parent,  sp='/', pp='/'):
                         re['var'] = dict(re['var'], **re['var'])
 
                         if not flag:
-                            re['code'] = 1
                             re['result'] = dict(re['result'], **o)
 
 
@@ -133,17 +137,14 @@ def check(sub, parent,  sp='/', pp='/'):
                         re['result'] = dict(re['result'], **r['result'])
 
             if code == 1:
-                re['code'] = 1
                 re['result'][sp + k] = {'code': 1, 'sv': sv, 'pp': pp + k, 'pv': pv}
             elif code == 2:
-                re['code'] = 2
                 re['result'][sp + k] = {'code': 2, 'sv': sv, 'pp': pp + k, 'pv': pv}
-        else:
-            re['code'] = 3  # 键不存在
+        else:  # 键不存在
             if var_flag:
                 re['var']['_' + sv[1:-1]] = None
             else:
-                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': ''}
+                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
 
     re['code'] = len(re['result'])
     return re
