@@ -100,9 +100,11 @@ def check(sub, parent,  sp='/', pp='/'):
             elif isinstance(sv, list):
                 if not isinstance(pv, list):
                     code = 2  # 键值的数据类型不一致
-                elif not isinstance(sv[0], dict):
-                    if sv != pv:
-                        code = 1  # 键值不等
+                elif sv and not isinstance(sv[0], dict):
+                    for v in sv:
+                        if v not in pv:
+                            code = 5  # 预期的 list 值在实际值的 list 不存在
+                            re['result'][sp + k] = {'code': 5, 'sv': sv, 'pp': pp + k, 'pv': pv}
                 else:
                     for i, sv_i in enumerate(sv):
                         result = []
@@ -136,10 +138,8 @@ def check(sub, parent,  sp='/', pp='/'):
                     else:
                         re['result'] = dict(re['result'], **r['result'])
 
-            if code == 1:
-                re['result'][sp + k] = {'code': 1, 'sv': sv, 'pp': pp + k, 'pv': pv}
-            elif code == 2:
-                re['result'][sp + k] = {'code': 2, 'sv': sv, 'pp': pp + k, 'pv': pv}
+            if code in (1, 3, 5):
+                re['result'][sp + k] = {'code': code, 'sv': sv, 'pp': pp + k, 'pv': pv}
         else:  # 键不存在
             if var_flag:
                 re['var']['_' + sv[1:-1]] = None

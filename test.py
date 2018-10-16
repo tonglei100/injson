@@ -5,7 +5,7 @@ sub = {"code": 200,
        "error": "hello, world",
        "name": "<name>",
        "phone": "<phone>",
-       "level": 1,
+       "level": [1],
        "result": [
            {"sweetest": "OK",
             "status": "<status>"
@@ -14,7 +14,8 @@ sub = {"code": 200,
             "status": "yes"
             },
            {"sonar": "OK",
-            "status": "yes"
+            "status": "yes",
+            "fruit": ["apple"]
             }
        ],
        "student":{"name": "leo",
@@ -25,7 +26,7 @@ sub = {"code": 200,
 parent = {"code": 200,
           "error": "you are bad",
           "name": "Leo",
-          "level": "ONE",
+          "level": [2,"ONE"],
           "result": [
               {"sweetest": "Fail",
                "status": "NO"
@@ -37,7 +38,8 @@ parent = {"code": 200,
                "status": "yes"
                },
               {"sonar": "OK",
-               "status": "yes"
+               "status": "yes",
+               "fruit": ["branana",'orange']
                }
           ],
           "student":{"name": "leo",
