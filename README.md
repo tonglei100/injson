@@ -89,7 +89,7 @@ print(result)
 }
 ```
 
-详细文档：https://sweeter.io/#/injson/
+> 详细文档：https://sweeter.io/#/injson/
 
 ## 加入我们
 
