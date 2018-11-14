@@ -1,4 +1,4 @@
-![inJSON](https://github.com/tonglei100/injson/blob/master/logo.png?raw=true)
+![inJSON](https://sweeter.io/docs/_media/injson.png)
 
 # inJSON
 
@@ -89,29 +89,13 @@ print(result)
 }
 ```
 
-## 列表的比较逻辑
+详细文档：https://sweeter.io/#/injson/
 
-### 列表的元素假设
-我们假设列表的所有元素都是同一个类型，比如都是字符串、数字、列表或都是字典。
-程序处理时以预期数据的第一个元素做类型判断，如果类型不同，可能会出错。
+## 加入我们
 
-### 列表的元素为字典
-会继续对字典进行递归比较。
+QQ 交流群：**158755338**
+> (验证码：python) <small>注意首字母小写</small>
 
-### 列表的元素是其他类型
-仅判断预期的列表元素是否在实际结果的列表中。
+微信公众号：**喜文测试**
 
-> 注：如果列表的元素还是列表，子列表看做普通类型处理，不会逐层比较。
-
-
-## 特殊匹配
-
-|开头字符|匹配说明|示例    |示例说明    |
-| ------ | -------- | -------- | ------------ |
-| \*     | 包含     | *test    | 包含test     |
-| ^      | 开头     | ^hello   | 以hello开头  |
-| $      | 结尾     | $world   | 以world结尾  |
-| \-     | 无此字段 | -        | 必须无此字段 |
-| \+     | 有此字段 | +        | 必须有此字段 |
-| \      | 转义     | \\*      | 匹配*        |
-| #      | 不等于   | #test    | 不为test     |
+![QQ2](https://sweeter.io/docs/_media/QQ.png)![WeChat](https://sweeter.io/docs/_media/WeChat.png)
