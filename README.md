@@ -62,18 +62,18 @@ print(result)
 
 ```python
 {
-    "code": 2,                          # 键值对不一致的个数，当值为 0 时，表示全部一致
+    "code": 2,                              # 键值对不一致的个数，当值为 0 时，表示全部一致
 
-    "result": {                         # 比较出不一致的键值对，并放在此 dict
-        "/error": {                     # 键的路径，以 / 开头
-            "code": 1,                  # 错误类型：1-值不一致，2-数据类型不一致，\
-                                        # 3-键不存在, 4-预期键不存在，实际键存在
+    "result": {                                # 比较出不一致的键值对，并放在此 dict
+        "/error": {                            # 键的路径，以 / 开头
+            "code": 1,                      # 错误类型：1-值不一致，2-数据类型不一致，\
+                                                   # 3-键不存在, 4-预期键不存在，实际键存在
             "sv": "hello,word",         # sv 全拼为 sub_value, sub json 中对应键的值
-            "pp": "/error",             # pp 全拼为 parent_path, parent json 中对应键的路径
-            "pv": "you are bad"         # pv 全拼为 parent_value, parent json 中对应键的值
+            "pp": "/error",                 # pp 全拼为 parent_path, parent json 中对应键的路径
+            "pv": "you are bad"       # pv 全拼为 parent_value, parent json 中对应键的值
         },
 
-        "/result[1].ages": {            # 如果是 list，则以 [i] 表示路径
+        "/result[1].ages": {             # 如果是 list，则以 [i] 表示路径
             "code": 1,
             "sv": [1, 2, 4],
             "pp": "/result[2].ages",    # 对于 list，其下标不一定一致。
@@ -81,11 +81,14 @@ print(result)
         }
     },
 
-    "var": {                            # 获取对应键位置上的值，并放在此 dict
+    "var": {                                     # 获取对应键位置上的值，并放在此 dict
         "name": "Leo",
-        "_phone": None,                 # 如果某个键在 parent 中不存在，则键带上下划线（_）前缀，其值为 None
+        "phone": None,                   # 如果某个键在 parent 中不存在，则值为 None
+                                                    # 但会列入 "none" 之中
         "status": "NO"
-    }
+    },
+
+    "none": ["phone"]                    # 在 parent 中不存的变量
 }
 ```
 

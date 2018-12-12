@@ -3,8 +3,8 @@ from copy import deepcopy
 
 def rule(data):
     result = []
-    for k, v in data.items():
-        result.append(v['code'])
+    for k in data:
+        result.append(data[k]['code'])
     return result
 
 
@@ -34,7 +34,7 @@ def check(sub, parent,  sp='/', pp='/'):
     sp: sub_path
     pp: parent_path
     '''
-    re = {'code': 0, 'result': {}, 'var': {}}
+    re = {'code': 0, 'result': {}, 'var': {}, 'none':[]}
     if sp != '/':
         sp += '.'
     if pp != '/':
@@ -92,7 +92,7 @@ def check(sub, parent,  sp='/', pp='/'):
                     code = 1  # 键值不等
 
             elif isinstance(sv, float):
-                if not absisinstance(pv, float):
+                if not isinstance(pv, float):
                     code = 2  # 键值的数据类型不一致
                 elif sv != pv:
                     code = 1  # 键值不等
@@ -142,7 +142,8 @@ def check(sub, parent,  sp='/', pp='/'):
                 re['result'][sp + k] = {'code': code, 'sv': sv, 'pp': pp + k, 'pv': pv}
         else:  # 键不存在
             if var_flag:
-                re['var']['_' + sv[1:-1]] = None
+                re['var'][sv[1:-1]] = None
+                re['none'].append(sv[1:-1])
             else:
                 re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
 
