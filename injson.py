@@ -138,7 +138,7 @@ def check(sub, parent,  sp='/', pp='/'):
                     else:
                         re['result'] = dict(re['result'], **r['result'])
 
-            if code !=0:
+            if code != 0:
                 re['result'][sp + k] = {'code': code, 'sv': sv, 'pp': pp + k, 'pv': pv}
         else:  # 键不存在
             if var_flag:
