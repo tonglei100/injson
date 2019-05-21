@@ -83,8 +83,7 @@ print(result)
 
     "var": {                                     # 获取对应键位置上的值，并放在此 dict
         "name": "Leo",
-        "phone": None,                   # 如果某个键在 parent 中不存在，则值为 None
-                                                    # 但会列入 "none" 之中
+        "phone": None,                   # 如果某个键在 parent 中不存在，则值为 None，但会列入 "none" 之中
         "status": "NO"
     },
 
