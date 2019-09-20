@@ -29,6 +29,11 @@ def optimum(sub, result, path):
     return result[0]
 
 
+def list2dict(data):
+    keys = ['['+str(i)+']' for i in range(len(data))]
+    return dict(zip(keys, data))
+
+
 def check(sub, parent,  sp='/', pp='/'):
     '''
     sp: sub_path
@@ -39,6 +44,8 @@ def check(sub, parent,  sp='/', pp='/'):
         sp += '.'
     if pp != '/':
         pp += '.'
+  
+
 
     for k, sv in sub.items():
         # 判断键值是否是 <value> 格式，如果是，则表明是变量赋值
@@ -100,32 +107,41 @@ def check(sub, parent,  sp='/', pp='/'):
             elif isinstance(sv, list):
                 if not isinstance(pv, list):
                     code = 2  # 键值的数据类型不一致
-                elif sv and not isinstance(sv[0], dict):
-                    for v in sv:
-                        if v not in pv:
-                            code = 5  # 预期的 list 值在实际值的 list 不存在
-                            re['result'][sp + k] = {'code': 5, 'sv': sv, 'pp': pp + k, 'pv': pv}
+            
                 else:
-                    for i, sv_i in enumerate(sv):
-                        result = []
-                        flag = False
-                        for j, pv_i in enumerate(pv):
-                            r = check(sv_i, pv_i, sp + k + '[%s]' % i, pp + k + '[%s]' % j)
-                            if r['code'] == 0:
-                                flag = True
-                                re['var'] = dict(re['var'], **r['var'])
-                                break
+                    for i in range(len(sv)):  # 把二级列表转换为 dict                         
+                        if isinstance(sv[i], list):
+                            sv[i] = list2dict(sv[i])
+                    for i in range(len(pv)):  # 把二级列表转换为 dict                            
+                        if isinstance(pv[i], list):
+                            pv[i] = list2dict(pv[i]) 
+
+                    if isinstance(sv[0], dict):  # list 子项为 dict
+                        for i, sv_i in enumerate(sv):
+                            result = []
+                            flag = False
+                            for j, pv_i in enumerate(pv):
+                                r = check(sv_i, pv_i, sp + k + '[%s]' % i, pp + k + '[%s]' % j)
+                                if r['code'] == 0:
+                                    flag = True
+                                    re['var'] = dict(re['var'], **r['var'])
+                                    break
+                                else:
+                                    result.append(r['result'])
+                            if result:
+                                o = optimum(sv_i, result, sp + k + '[%s]' % i)
                             else:
-                                result.append(r['result'])
-                        if result:
-                            o = optimum(sv_i, result, sp + k + '[%s]' % i)
-                        else:
-                            o = {}
-                        re['var'] = dict(re['var'], **re['var'])
+                                o = {}
+                            re['var'] = dict(re['var'], **re['var'])
 
-                        if not flag:
-                            re['result'] = dict(re['result'], **o)
+                            if not flag:
+                                re['result'] = dict(re['result'], **o)
 
+                    else:  # list 子项为 int/str/float/None/False/True
+                        for v in sv:
+                            if v not in pv:
+                                code = 5  # 预期的 list 值在实际值的 list 不存在
+                                re['result'][sp + k] = {'code': 5, 'sv': sv, 'pp': pp + k, 'pv': pv}
 
             elif isinstance(sv, dict):
                 if not isinstance(pv, dict):
@@ -144,7 +160,7 @@ def check(sub, parent,  sp='/', pp='/'):
             if var_flag:
                 re['var'][sv[1:-1]] = None
                 re['none'].append(sv[1:-1])
-            else:
+            else:            
                 re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
 
     re['code'] = len(re['result'])
