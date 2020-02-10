@@ -153,6 +153,12 @@ def check(sub, parent,  sp='/', pp='/'):
                        continue
                     else:
                         re['result'] = dict(re['result'], **r['result'])
+                        for k in r['var']:
+                            r['var'][k] = None
+                            if k not in re['none']:
+                                re['none'].append(k)
+                        re['var'] = dict(re['var'], **r['var'])
+
 
             if code != 0:
                 re['result'][sp + k] = {'code': code, 'sv': sv, 'pp': pp + k, 'pv': pv}

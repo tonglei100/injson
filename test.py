@@ -19,7 +19,7 @@ sub = {"code": 200,
             "fruit": ["apple"]
             }
        ],
-       "student":{"name": "leo",
+       "student":{"name": "Andy",
             "age": "<age>"
            }
        }
@@ -44,7 +44,7 @@ parent = {"code": 200,
                "fruit": ["branana",'orange']
                }
           ],
-          "student":{"name": "leo",
+          "student":{"name": "Lily",
                "age": 19
               }
           }
