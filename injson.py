@@ -73,7 +73,10 @@ def check(sub, parent,  sp='/', pp='/'):
                 continue
 
             elif isinstance(sv, str):
-                if not isinstance(pv, str):
+                if sv.startswith('#'):
+                    if sv[1:] == str(pv):
+                        code = 1                
+                elif not isinstance(pv, str):
                     code = 2  # 键值的数据类型不一致
                 elif sv.startswith('*'):
                     if sv[1:] not in pv:
@@ -83,9 +86,6 @@ def check(sub, parent,  sp='/', pp='/'):
                         code = 1
                 elif sv.startswith('$'):
                     if not pv.endswith(sv[1:]):
-                        code = 1
-                elif sv.startswith('#'):
-                    if sv[1:] == str(pv):
                         code = 1
                 elif sv.startswith('\\'):
                     sv = sv[1:]
