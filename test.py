@@ -7,6 +7,9 @@ sub = {"code": 200,
        "phone": "<phone>",
        "level": [1],
        "address": "china",
+       "result[0]": "<result01>",
+        "result[0]['status']": "<status01>",
+        "result[2]['status']": "no",   
        "result": [
            {"sweetest": "OK",
             "status": "<status>"
@@ -41,7 +44,7 @@ parent = {"code": 200,
                },
               {"sonar": "OK",
                "status": "yes",
-               "fruit": ["branana",'orange']
+               "fruit": ["branana",'apple']
                }
           ],
           "student":{"name": "Lily",

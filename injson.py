@@ -9,8 +9,8 @@ def rule(data):
 
 
 def optimum(sub, result, path):
-    if path != '/':
-        path += '.'
+    # if path != '/':
+    #     path += '.'
 
     res = result
     for k in sub:
@@ -40,32 +40,57 @@ def check(sub, parent,  sp='/', pp='/'):
     pp: parent_path
     '''
     re = {'code': 0, 'result': {}, 'var': {}, 'none':[]}
-    if sp != '/':
-        sp += '.'
-    if pp != '/':
-        pp += '.'
+    # if sp != '/':
+    #     sp += '.'
+    # if pp != '/':
+    #     pp += '.'
   
+    def _in(k, data):
+        try:
+            return  eval('data[k]')
+        except:
+            return ''      
 
 
     for k, sv in sub.items():
         # 判断键值是否是 <value> 格式，如果是，则表明是变量赋值
         var_flag = isinstance(sv, str) and sv.startswith(
             '<') and sv.endswith('>')
+        index = ''
+
+        if '[' in k:
+            s = k.split('[', 1)
+            index = '[' + s[1]
+            k = s[0]
+
+        _k = '[\'' + k + '\']' + index
 
         # 预期键不存在
         if sv == '-':
             # 预期键不存在，实际键存在
             if k in parent:
-                re['result'][sp + k] = {'code': 4, 'sv': sv, 'pp': pp + k, 'pv': parent[k]}
+                re['result'][sp + _k] = {'code': 4, 'sv': sv, 'pp': pp + _k, 'pv': parent[k]}
 
         # 预期键存在
         elif sv == '+':
             # 预期键存在，实际键不存在
             if k not in parent:
-                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
+                re['result'][sp + _k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
 
         elif k in parent:
-            pv = parent[k]
+            if index:
+                try:
+                    pv = eval('parent[k]' + index)
+                except:
+                    if var_flag:
+                        re['var'][sv[1:-1]] = None
+                        re['none'].append(sv[1:-1])
+                    else:                    
+                        re['result'][sp + _k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
+                    continue
+            else:   
+                pv = parent[k]
+
             code = 0
 
             if var_flag:
@@ -75,7 +100,22 @@ def check(sub, parent,  sp='/', pp='/'):
             elif isinstance(sv, str):
                 if sv.startswith('#'):
                     if sv[1:] == str(pv):
-                        code = 1                
+                        code = 1
+                elif sv.startswith('<>'):
+                    if (isinstance(pv, int) or isinstance(pv, float)) and pv == float(sv[2:]):
+                        code = 1                          
+                elif sv.startswith('>='):
+                    if (isinstance(pv, int) or isinstance(pv, float)) and pv < float(sv[2:]):
+                        code = 1                        
+                elif sv.startswith('>'):
+                    if (isinstance(pv, int) or isinstance(pv, float)) and pv <= float(sv[1:]):
+                        code = 1
+                elif sv.startswith('<='):
+                    if (isinstance(pv, int) or isinstance(pv, float)) and pv > float(sv[2:]):
+                        code = 1                        
+                elif sv.startswith('<'):
+                    if (isinstance(pv, int) or isinstance(pv, float)) and pv >= float(sv[1:]):
+                        code = 1                                                                         
                 elif not isinstance(pv, str):
                     code = 2  # 键值的数据类型不一致
                 elif sv.startswith('*'):
@@ -121,7 +161,7 @@ def check(sub, parent,  sp='/', pp='/'):
                             result = []
                             flag = False
                             for j, pv_i in enumerate(pv):
-                                r = check(sv_i, pv_i, sp + k + '[%s]' % i, pp + k + '[%s]' % j)
+                                r = check(sv_i, pv_i, sp + _k + '[%s]' % i, pp + _k + '[%s]' % j)
                                 if r['code'] == 0:
                                     flag = True
                                     re['var'] = dict(re['var'], **r['var'])
@@ -141,7 +181,7 @@ def check(sub, parent,  sp='/', pp='/'):
                         for v in sv:
                             if v not in pv:
                                 code = 5  # 预期的 list 值在实际值的 list 不存在
-                                re['result'][sp + k] = {'code': 5, 'sv': sv, 'pp': pp + k, 'pv': pv}
+                                re['result'][sp + _k] = {'code': 5, 'sv': sv, 'pp': pp + _k, 'pv': pv}
 
             elif isinstance(sv, dict):
                 if not isinstance(pv, dict):
@@ -161,13 +201,13 @@ def check(sub, parent,  sp='/', pp='/'):
 
 
             if code != 0:
-                re['result'][sp + k] = {'code': code, 'sv': sv, 'pp': pp + k, 'pv': pv}
+                re['result'][sp + _k] = {'code': code, 'sv': sv, 'pp': pp + _k, 'pv': pv}
         else:  # 键不存在
             if var_flag:
                 re['var'][sv[1:-1]] = None
                 re['none'].append(sv[1:-1])
             else:            
-                re['result'][sp + k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
+                re['result'][sp + _k] = {'code': 3, 'sv': sv, 'pp': None, 'pv': None}
 
     re['code'] = len(re['result'])
     return re
