@@ -8,13 +8,14 @@ sub = {"code": 200,
        "level": [1],
        "address": "china",
        "result[0]": "<result01>",
-        "result[0]['status']": "<status01>",
-        "result[2]['status']": "no",   
+       "result[0].status": "<status01>",
+       "result[2].status": "no",   
        "result": [
            {"sweetest": "OK",
             "status": "<status>"
             },
-           {"ages": [1, 2, 4],
+           {"ages": [1, 2, 3],
+            "ages[0]": 2,
             "status": "yes"
             },
            {"sonar": "OK",

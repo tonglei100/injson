@@ -9,8 +9,8 @@ def rule(data):
 
 
 def optimum(sub, result, path):
-    # if path != '/':
-    #     path += '.'
+    if path != '/':
+        path += '.'
 
     res = result
     for k in sub:
@@ -40,10 +40,10 @@ def check(sub, parent,  sp='/', pp='/'):
     pp: parent_path
     '''
     re = {'code': 0, 'result': {}, 'var': {}, 'none':[]}
-    # if sp != '/':
-    #     sp += '.'
-    # if pp != '/':
-    #     pp += '.'
+    if sp != '/':
+        sp += '.'
+    if pp != '/':
+        pp += '.'
   
     def _in(k, data):
         try:
@@ -57,13 +57,26 @@ def check(sub, parent,  sp='/', pp='/'):
         var_flag = isinstance(sv, str) and sv.startswith(
             '<') and sv.endswith('>')
         index = ''
+        _k = k
 
-        if '[' in k:
+        if '.' in k:
+            s = k.split('.')
+            for _s in s[1:]:
+                if '[' in _s:
+                    d = _s.split('[', 1)
+                    index += '[\'' + d[0] + '\']' + '[\''  + d[1]
+                else:
+                    index += '[\'' + _s + '\']'
+            if '[' in s[0]:
+                k = s[0].split('[', 1)[0]
+                index = '[' + s[0].split('[', 1)[1] + index
+            else:
+                k = s[0]
+
+        elif '[' in k:
             s = k.split('[', 1)
             index = '[' + s[1]
             k = s[0]
-
-        _k = '[\'' + k + '\']' + index
 
         # 预期键不存在
         if sv == '-':
@@ -212,6 +225,3 @@ def check(sub, parent,  sp='/', pp='/'):
     re['code'] = len(re['result'])
     return re
 
-
-if __name__ == '__main__':
-    pass
